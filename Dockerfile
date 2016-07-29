@@ -9,7 +9,7 @@ RUN npm install -gq nodemon
 
 # use changes to package.json to force Docker not to use the cache
 # when we change our application's nodejs dependencies:
-COPY package.json
+COPY package.json ./
 RUN npm install -q
 
 # From here we load our application's code in, therefore the previous docker

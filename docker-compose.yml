@@ -6,12 +6,11 @@ services:
     depends_on:
       - mongo
     environment:
-      - DEBUG=syncrtc:*
+      - DEBUG=remote_interview:*
     volumes:
       - .:/app
-      - /app/node_modules
     command: [nodemon, ./bin/www]
+    ports:
+      - "3000:3000"
   mongo:
     image: mongo
-
-

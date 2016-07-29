@@ -10,6 +10,8 @@ var users = require('./routes/users');
 
 var app = express();
 
+var db = require('./models.js');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -28,11 +30,11 @@ app.use(function(req, res, next) {
   // guardarla en mongo
 
   // setear el contador
-  if(!req.visits) {
-    req.visits = 0;
-  }
-  req.visits += 1;
-  next();
+  db.Visit.count(function(err, c) {
+    req.visits = c || 0;
+    next();
+  });
+  
 });
 
 app.use('/', routes);
