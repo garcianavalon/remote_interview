@@ -32,14 +32,14 @@ app.use(function(req, res, next) {
   currentVisit.save(function(err, currentVisit){
     if (err) return console.error(err);
     console.log(currentVisit);
+
+    // setear el contador
+    db.Visit.count(function(err, c) {
+      req.visits = c || 0;
+      next();
+    });
   });
 
-  // setear el contador
-  db.Visit.count(function(err, c) {
-    req.visits = c || 0;
-    next();
-  });
-  
 });
 
 app.use('/', routes);
