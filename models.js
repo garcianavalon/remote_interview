@@ -7,7 +7,7 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 var visitSchema = mongoose.Schema({
-      date: String
+      ip: String
   });
 
 module.exports.Visit = mongoose.model('Visit', visitSchema);
