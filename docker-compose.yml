@@ -1,0 +1,17 @@
+version: '2'
+services:
+  web:
+    build: .
+    image: garcianavalon/remote_interview
+    depends_on:
+      - mongo
+    environment:
+      - DEBUG=syncrtc:*
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: [nodemon, ./bin/www]
+  mongo:
+    image: mongo
+
+
