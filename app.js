@@ -26,9 +26,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
   // extraer info
-
+  var currentVisit = new db.Visit(navigator);
   // guardarla en mongo
-
+  db.Visit.save(function(err, currentVisit){
+    if (err) return console.error(err);
+    console.dir(currentVisit);
+  }
   // setear el contador
   db.Visit.count(function(err, c) {
     req.visits = c || 0;
