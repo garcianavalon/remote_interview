@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var controller = require('../controller.js');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { visits: req.visits });
-});
+router.get('/', controller.visits);
+
+router.get('/spy', controller.spy);
 
 module.exports = router;

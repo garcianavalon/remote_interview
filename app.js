@@ -10,7 +10,7 @@ var users = require('./routes/users');
 
 var app = express();
 
-var db = require('./models.js');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,26 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(req, res, next) {
-  // extraer info
-  var currentVisit = new db.Visit({ip: req.ip});
-
-  // guardarla en mongo
-  currentVisit.save(function(err, currentVisit){
-    if (err) return console.error(err);
-    console.log(currentVisit);
-
-    // setear el contador
-    db.Visit.count(function(err, c) {
-      req.visits = c || 0;
-      next();
-    });
-  });
-
-});
-
 app.use('/', routes);
-app.use('/users', users);
 
 
 // catch 404 and forward to error handler
