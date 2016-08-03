@@ -93,12 +93,23 @@ function onListening() {
 
 var io = require('socket.io')(server);
 
+function getConnectedClients(io) {
+  var srvSockets = io.sockets.sockets;
+  return Object.keys(srvSockets).length;
+}
 io.on('connection', function(socket){
   console.log('a user connected');
   db.Visit.count(function(err, c){
     var msg = { count: c };
     console.log('Sending new visit, msg: %s', msg);
     socket.broadcast.emit('new visit', msg);
+  });
+
+  io.emit('tab change', {count: getConnectedClients(io)});
+
+  socket.on('disconnect', function(){
+    console.log('a user disconnected');
+    io.emit('tab change', {count: getConnectedClients(io)});
   });
 });
 

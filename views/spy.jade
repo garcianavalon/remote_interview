@@ -2,8 +2,11 @@ extends layout
 
 block content
   h1= title
-  p Number of visits: 
-    #counter.div #{count}
+  p Total number of visits: 
+    #visitsCounter.div #{count}
+
+  p Number of open tabs(including this one): 
+    #tabsCounter.div 0
 
 block js
   script(src='/socket.io/socket.io.js')
@@ -12,6 +15,12 @@ block js
     var socket = io();
     socket.on('new visit', function(msg){
       console.log('New visit event, msg: %s', msg);
-      document.getElementById('counter').innerHTML = msg.count
+      document.getElementById('visitsCounter').innerHTML = msg.count
     });
+
+    socket.on('tab change', function(msg){
+      console.log('Tab change event, msg: %s', msg);
+      document.getElementById('tabsCounter').innerHTML = msg.count
+    });
+
 
