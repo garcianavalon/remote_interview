@@ -1,11 +1,7 @@
-const db = require('./models.js');
-const socket = require('./socket.js');
+var db = require('./mongo.js');
 
-/**
-socket.notify -> notifies all spies new count
-*/
 module.exports.visits = function(req, res, next) {
-  
+    
     // extraer info
     const currentVisit = new db.Visit({ip: req.ip});
 
@@ -14,9 +10,6 @@ module.exports.visits = function(req, res, next) {
       if (err) return console.error(err);
       console.log(currentVisit);
 
-      db.Visit.count(function(err, c) {
-        socket.notify(c);
-      });
       renderCount(res);
     });
 
@@ -24,16 +17,15 @@ module.exports.visits = function(req, res, next) {
 
 module.exports.spy = function(req, res, next) {
 
-    renderCount(res);
-
+    renderCount(res, 'spy');
   
 };
 
-function renderCount(res) {
+function renderCount(res, template) {
 
   // setear el contador
   db.Visit.count(function(err, c) {
-    res.render('index', { count: c || 0 });
+    res.render(template || 'index', { count: c || 0 });
   });
 
 }

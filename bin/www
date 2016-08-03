@@ -7,6 +7,7 @@
 var app = require('../app');
 var debug = require('debug')('remote_interview:server');
 var http = require('http');
+var db = require('../mongo.js');
 
 /**
  * Get port from environment and store in Express.
@@ -88,3 +89,16 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+  db.Visit.count(function(err, c){
+    var msg = { count: c };
+    console.log('Sending new visit, msg: %s', msg);
+    socket.broadcast.emit('new visit', msg);
+  });
+});
+
